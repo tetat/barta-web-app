@@ -14,27 +14,27 @@ class UpdateUser extends Controller
             return redirect('/guest');
         }
 
-        $name = $req->first_name ? $req->first_name . ' ' : '';
-        if ($req->last_name) $name = $name . $req->last_name;
-
-        if ($name === '') $name = null;
-
-        $user = [
-            'name' => [$name, 'name'],
-            'email' => [$req->email, 'email'],
-            'password' => [
-                $req->password ? Hash::make($req->password) : null,
-                'password'
-            ],
-            'bio' => [$req->bio, 'bio']
-        ];
-
-        foreach ($user as $field) {
-            if ($field[0] === null) continue;
-            DB::table('users')->where('username', $req->username)->update([$field[1] => $field[0]]);
+        if (!$req->first_name && !$req->last_name && !$req->email && !$req->password && !$req->bio) {
+            return dd("Empty request! pleae provide data for edit.");
         }
+
+        $user = ['initial' => 'muri'];
+
+        if ($req->first_name || $req->last_name) {
+            $name = '';
+            if ($req->first_name) $name = $req->first_name . ' ';
+            if ($req->last_name) $name = $name . $req->last_name;
+            $user['name'] = $name;
+        }
+        if ($req->email) $user['email'] = $req->email;
+        if ($req->password) $user['password'] = Hash::make($req->password);
+        if ($req->bio) $user['bio'] = $req->bio;
+
+        unset($user['initial']);
+
+        $res = DB::table('users')->where('username', $req->username)->update($user);
         
-        // if (!$user) return dd("Couldn't update.");
+        if (!$res) return dd("Update failed!");
 
         return redirect('/');
     }
