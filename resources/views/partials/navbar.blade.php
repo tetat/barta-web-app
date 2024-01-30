@@ -105,7 +105,7 @@
             aria-labelledby="user-menu-button"
             tabindex="-1">
             <a
-              href="./profile.html"
+              href="/user/{{session('username')}}"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
               tabindex="-1"
@@ -113,7 +113,7 @@
               >Your Profile</a
             >
             <a
-              href="./edit-profile.html"
+              href="/update"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
               tabindex="-1"
@@ -121,7 +121,7 @@
               >Edit Profile</a
             >
             <a
-              href="#"
+              href="/sign_out"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
               tabindex="-1"
@@ -208,9 +208,9 @@
         </div>
         <div class="ml-3">
           <div class="text-base font-medium text-gray-800">
-            Ahmed Shamim Hasan Shaon
+            {{session('name')}}
           </div>
-          <div class="text-sm font-medium text-gray-500">shaon@shamim.com</div>
+          <div class="text-sm font-medium text-gray-500">{{session('username')}}</div>
         </div>
       </div>
       <div class="mt-3 space-y-1">
@@ -220,17 +220,17 @@
           >Create New Post</a
         >
         <a
-          href="./profile.html"
+          href="/user/{{session('username')}}"
           class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
           >Your Profile</a
         >
         <a
-          href="./edit-profile.html"
+          href="/update"
           class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
           >Edit Profile</a
         >
         <a
-          href="#"
+          href="/sign_out"
           class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
           >Sign out</a
         >
