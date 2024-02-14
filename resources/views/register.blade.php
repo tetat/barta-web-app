@@ -27,7 +27,7 @@
         <form
           class="space-y-6"
           action="/register"
-          method="POST">
+          method="POST" novalidate>
 
           @csrf
             
@@ -42,12 +42,16 @@
               <input
                 id="name"
                 name="name"
+                value="{{old('name')}}"
                 type="text"
                 autocomplete="name"
-                placeholder="Alp Arslan"
+                placeholder="Mario Potter"
                 required
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
             </div>
+            @error('name')
+              <small style="color: red">{{$message}}</small>
+            @enderror
           </div>
 
           <!-- Username -->
@@ -61,12 +65,16 @@
               <input
                 id="username"
                 name="username"
+                value="{{old('username')}}"
                 type="text"
                 autocomplete="username"
-                placeholder="alparslan1029"
+                placeholder="mario01"
                 required
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
             </div>
+            @error('username')
+              <small style="color: red">{{$message}}</small>
+            @enderror
           </div>
 
           <!-- Email -->
@@ -80,12 +88,16 @@
               <input
                 id="email"
                 name="email"
+                value="{{old('email')}}"
                 type="email"
                 autocomplete="email"
-                placeholder="alp.arslan@mail.com"
+                placeholder="mario@mail.com"
                 required
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
             </div>
+            @error('email')
+              <small style="color: red">{{$message}}</small>
+            @enderror
           </div>
 
           <!-- Password -->
@@ -105,6 +117,9 @@
                 required
                 class="block w-full rounded-md border-0 p-2 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
             </div>
+            @error('password')
+              <small style="color: red">{{$message}}</small>
+            @enderror
           </div>
 
           <div>

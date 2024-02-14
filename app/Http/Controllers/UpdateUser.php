@@ -2,39 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UpdateUser extends Controller
 {
-    public function updateUserByUsername(Request $req) {
+    public function updateUserByUsername(UpdateUserRequest $req) {
 
-        if (!session('username')) {
-            return redirect('/guest');
-        }
+        $user = $req->validated();
 
-        if (!$req->first_name && !$req->last_name && !$req->email && !$req->password && !$req->bio) {
-            return dd("Empty request! pleae provide data for edit.");
-        }
+        if (!$user['first_name']) unset($user['first_name']);
+        if (!$user['last_name']) unset($user['last_name']);
+        if (!$user['email']) unset($user['email']);
+        if (!$user['password']) unset($user['password']);
+        if (!$user['bio']) unset($user['bio']);
 
-        $user = ['initial' => 'muri'];
+        if (!$user) return back()->withErrors('Please provide data you want to update.');
 
-        if ($req->first_name || $req->last_name) {
+        if (isset($user['first_name']) || isset($user['last_name'])) {
             $name = '';
-            if ($req->first_name) $name = $req->first_name . ' ';
-            if ($req->last_name) $name = $name . $req->last_name;
+            if (isset($user['first_name'])) {
+                $name = $user['first_name'] . ' ';
+                unset($user['first_name']);
+            }
+            if (isset($user['last_name'])) {
+                $name = $name . $user['last_name'];
+                unset($user['last_name']);
+            }
+
             $user['name'] = $name;
         }
-        if ($req->email) $user['email'] = $req->email;
-        if ($req->password) $user['password'] = Hash::make($req->password);
-        if ($req->bio) $user['bio'] = $req->bio;
-
-        unset($user['initial']);
+        
+        if (isset($user['password'])) $user['password'] = Hash::make($user['password']);
 
         $res = DB::table('users')->where('username', $req->username)->update($user);
         
-        if (!$res) return dd("Update failed!");
+        if (!$res) return back()->withErrors('Failed to update.')->withInput();
 
         return redirect('/');
     }

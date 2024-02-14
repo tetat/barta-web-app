@@ -89,9 +89,9 @@
               aria-haspopup="true">
               <span class="sr-only">Open user menu</span>
               <img
-                class="h-8 w-8 rounded-full"
-                src="https://avatars.githubusercontent.com/u/831997"
-                alt="Ahmed Shamim Hasan Shaon" />
+                class="h-8 w-8 border-2 rounded-full"
+                src="{{asset(session('profile_picture'))}}"
+                alt="{{session('name')}}" />
             </button>
           </div>
 
@@ -202,9 +202,9 @@
       <div class="flex items-center px-4">
         <div class="flex-shrink-0">
           <img
-            class="h-10 w-10 rounded-full"
-            src="https://avatars.githubusercontent.com/u/831997"
-            alt="Ahmed Shamim Hasan Shaon" />
+            class="h-10 w-10 border-2 rounded-full"
+            src="{{asset(session('profile_picture'))}}"
+            alt="{{session('name')}}" />
         </div>
         <div class="ml-3">
           <div class="text-base font-medium text-gray-800">

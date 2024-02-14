@@ -31,7 +31,14 @@
           method="POST">
           
           @csrf
-            
+          
+          <!-- if email or password incorrect -->
+          @if ($errors->any())
+            @foreach ($errors->all() as $error)
+              <p style="color: red">Login failed: {{$errors->all()[0]}}</p>
+            @endforeach
+          @endif
+
           <div>
             <label
               for="email"
@@ -42,12 +49,16 @@
               <input
                 id="email"
                 name="email"
+                value="{{old('email')}}"
                 type="email"
                 autocomplete="email"
                 placeholder="bruce@wayne.com"
                 required
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
             </div>
+            @error('email')
+              <small style="color: red">{{$message}}</small>
+            @enderror
           </div>
 
           <div>
@@ -75,6 +86,9 @@
                 required
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
             </div>
+            @error('password')
+              <small style="color: red">{{$message}}</small>
+            @enderror
           </div>
 
           <div>

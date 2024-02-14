@@ -26,6 +26,12 @@
         @method('patch')
         @csrf
 
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+              <p style="color: red">Update failed: {{$errors->all()[0]}}</p>
+            @endforeach
+          @endif
+
         <div class="space-y-12">
           <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-xl font-semibold leading-7 text-gray-900">
@@ -83,11 +89,14 @@
                     <input
                       type="text"
                       name="first_name"
+                      value="{{old('first_name')}}"
                       id="first_name"
                       autocomplete="given-name"
-                      value="Ahmed Shamim Hasan"
                       class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6" />
                   </div>
+                  @error('first_name')
+                  <small style="color: red">{{$message}}</small>
+                  @enderror
                 </div>
 
                 <div class="sm:col-span-3">
@@ -100,11 +109,14 @@
                     <input
                       type="text"
                       name="last_name"
+                      value="{{old('last_name')}}"
                       id="last_name"
-                      value="Shaon"
                       autocomplete="family-name"
                       class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6" />
                   </div>
+                  @error('last_name')
+                  <small style="color: red">{{$message}}</small>
+                  @enderror
                 </div>
 
                 <div class="col-span-full">
@@ -117,11 +129,14 @@
                     <input
                       id="email"
                       name="email"
+                      value="{{old('email')}}"
                       type="email"
                       autocomplete="email"
-                      value="ahmed.shamim@admin.com"
                       class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6" />
                   </div>
+                  @error('email')
+                  <small style="color: red">{{$message}}</small>
+                  @enderror
                 </div>
 
                 <div class="col-span-full">
@@ -138,6 +153,9 @@
                       autocomplete="password"
                       class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6" />
                   </div>
+                  @error('password')
+                  <small style="color: red">{{$message}}</small>
+                  @enderror
                 </div>
               </div>
             </div>
@@ -154,14 +172,16 @@
                     id="bio"
                     name="bio"
                     rows="3"
-                    class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">
-Less Talk, More Code 💻</textarea
+                    class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"></textarea
                   >
                 </div>
                 <p class="mt-3 text-sm leading-6 text-gray-600">
                   Write a few sentences about yourself.
                 </p>
               </div>
+              @error('bio')
+              <small style="color: red">{{$message}}</small>
+              @enderror
             </div>
           </div>
         </div>
