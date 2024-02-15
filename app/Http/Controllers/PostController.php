@@ -41,9 +41,7 @@ class PostController extends Controller
     }
 
     public function getPosts() {
-        if (!session('username')) {
-            return redirect('/guest');
-        }
+        if (!session('username')) return redirect('/guest');
 
         $posts = DB::table('posts')->orderBy('created_at', 'desc')->leftJoin('users', 'posts.user_id', '=', 'users.id')->select(['posts.*', 'users.name', 'users.username', 'users.profile_picture'])->get();
 
@@ -54,6 +52,22 @@ class PostController extends Controller
         }
 
         return view('app')->with('posts', $posts);
+    }
+
+    public function getPost(Request $req) {
+        if (!session('username')) return redirect('/guest');
+
+        $post = DB::table('posts')->leftJoin('users', 'posts.user_id', '=', 'users.id')->where('post_unique_id', '=', $req->post_unique_id)->select(['posts.*', 'users.name', 'users.username', 'users.profile_picture'])->get()[0];
+
+        $post->images = DB::table('images')->where('post_id', '=', $post->id)->select(['image', 'post_id'])->get();
+
+        return view('post')->with('post', $post);
+    }
+
+    public function edit(PostRequest $req) {
+        $update = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->update($req->validated());
+
+        return redirect('/');
     }
 
     public function drop(Request $req) {

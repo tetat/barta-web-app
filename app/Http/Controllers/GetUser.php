@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Redirect;
 
 class GetUser extends Controller
 {
@@ -15,7 +13,7 @@ class GetUser extends Controller
         }
 
         $user = DB::table('users')->select(
-            ['name', 'username', 'email', 'profile_picture']
+            ['name', 'username', 'bio', 'email', 'profile_picture']
             )->where(
                 'username', trim($req->username)
                 )->get();

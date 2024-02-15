@@ -22,9 +22,14 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $Rules = [
             'description' => 'required|min:2|max:1000',
             'image.*' => 'required|image|mimes:jpeg,jpg,png|max:1024'
         ];
+        if ($this->image === null) {
+            unset($Rules['image.*']);
+        }
+
+        return $Rules;
     }
 }

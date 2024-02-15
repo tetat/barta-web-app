@@ -26,10 +26,12 @@
           class="flex gap-4 justify-center flex-col text-center items-center">
           <!-- Avatar -->
          <div class="relative">
+           <a href="/user/{{ $user[0]->username }}/profile_picture">
            <img
              class="w-32 h-32 rounded-full border-2 border-gray-800"
              src="{{asset($user[0]->profile_picture)}}"
-             alt="Ahmed Shamim" />
+             alt="{{ $user[0]->name }}" />
+           </a>
            <span
              class="bottom-2 right-4 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
          </div>
@@ -38,7 +40,7 @@
           <!-- User Meta -->
           <div>
             <h1 class="font-bold md:text-2xl">{{ $user[0]->name }}</h1>
-            <p class="text-gray-700">Less Talk, More Code 💻</p>
+            <p class="text-gray-700">{{ $user[0]->bio }}</p>
           </div>
           <!-- / User Meta -->
         </div>
@@ -69,7 +71,7 @@
 
         <!-- Edit Profile Button (Only visible to the profile owner) -->
         <a
-          href="/update/{{session('username')}}"
+          href="/update"
           type="button"
           class="-m-2 flex gap-2 items-center rounded-full px-4 py-2 font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700">
           <svg

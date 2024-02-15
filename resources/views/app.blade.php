@@ -239,7 +239,7 @@
                           aria-labelledby="user-menu-button"
                           tabindex="-1">
                     <a
-                            href="#"
+                            href="/edit_post/{{$post->post_unique_id}}"
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             role="menuitem"
                             tabindex="-1"
@@ -270,7 +270,7 @@
           <!-- Images if any -->
           <div class="py-4 flex items-center gap-2 text-gray-700 font-normal">
             @foreach ($post->images as $img)
-            <img src="{{$img->image}}" width="150px" height="100px" alt="">
+            <img src="{{asset($img->image)}}" width="150px" height="100px" alt="">
             @endforeach
           </div>
 
@@ -279,6 +279,8 @@
             <span class="">6 minutes ago</span>
             <span class="">•</span>
             <span>450 views</span>
+            <span class="">•</span>
+            <a href="/post/{{$post->post_unique_id}}">more...</a>
           </div>
 
           <!-- Barta Card Bottom -->
