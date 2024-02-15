@@ -37,7 +37,7 @@ class PostController extends Controller
             DB::table('images')->insert($imageData);
         }
 
-        return redirect('/');
+        return redirect('/')->with('message', 'Created');
     }
 
     public function getPosts() {
@@ -82,6 +82,6 @@ class PostController extends Controller
 
         $delete = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->delete();
 
-        return redirect('/');
+        return redirect('/')->with('message', 'Drop');
     }
 }

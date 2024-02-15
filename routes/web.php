@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UpdateUser;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -80,3 +81,4 @@ Route::get('/user/{username}/profile_picture', function (Request $req) {
 
     return view('edit_profile_picture')->with('user', $user);
 });
+Route::patch('/user/{username}/profile_picture', [UserController::class, 'editProfilePicture']);
