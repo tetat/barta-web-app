@@ -28,7 +28,7 @@
 
         @if ($errors->any())
             @foreach ($errors->all() as $error)
-              <p style="color: red">Update failed: {{$errors->all()[0]}}</p>
+              <p style="color: red">Update failed: {{$error}}</p>
             @endforeach
           @endif
 
