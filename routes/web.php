@@ -58,7 +58,7 @@ Route::get('/user/{username}', [UserController::class, 'getUserByUsername']);
 Route::get('/update', function () {
     return view('edit_user');
 });
-Route::patch('/edit/{username}', [UpdateUser::class, 'updateUserByUsername']);
+Route::patch('/edit/{username}', [UserController::class, 'updateUserByUsername']);
 
 // Update profile picture
 Route::get('/user/{username}/profile_picture', function (Request $req) {
