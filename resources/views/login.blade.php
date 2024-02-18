@@ -38,6 +38,10 @@
               <p style="color: red">Login failed: {{$errors->all()[0]}}</p>
             @endforeach
           @endif
+          <!-- if registration success -->
+          @if (session()->has('success'))
+          <p style="color: green">{{session('success')}}</p>
+          @endif
 
           <div>
             <label

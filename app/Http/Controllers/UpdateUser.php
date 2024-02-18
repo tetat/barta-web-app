@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UpdateUser extends Controller
 {
     public function updateUserByUsername(UpdateUserRequest $req) {
+        if (!Auth::user()) return redirect(route('guest'));
 
         $user = $req->validated();
 

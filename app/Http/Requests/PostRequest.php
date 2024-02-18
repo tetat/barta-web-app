@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class PostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (session('username') !== null) return true;
+        if (Auth::user()) return true;
         return false;
     }
 
@@ -24,7 +25,7 @@ class PostRequest extends FormRequest
     {
         $Rules = [
             'description' => 'required|min:2|max:1000',
-            'image.*' => 'required|image|mimes:jpeg,jpg,png|max:1024'
+            'image.*' => 'sometimes|image|mimes:jpeg,jpg,png|max:1024'
         ];
         if ($this->image === null) {
             unset($Rules['image.*']);

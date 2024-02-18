@@ -28,7 +28,7 @@
       <!-- Barta Create Post Card -->
      <form
        method="POST"
-       action="/post_store"
+       action="{{route('post_store')}}"
        enctype="multipart/form-data"
        class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-5 sm:px-6 space-y-3">
 
@@ -41,8 +41,8 @@
            <div class="flex-shrink-0">
              <img
                class="h-10 w-10 border-2 rounded-full object-cover"
-               src="{{asset(session('profile_picture'))}}"
-               alt="{{session('name')}}" />
+               src="{{asset(auth()->user()->profile_picture)}}"
+               alt="{{auth()->user()->name}}" />
            </div>
            <!-- &lt;!&ndash; /User Avatar &ndash;&gt; -->
 
@@ -53,7 +53,7 @@
                name="description"
                value="{{old('description')}}"
                rows="2"
-               placeholder="What's going on, {{session('name')}}?"></textarea>
+               placeholder="What's going on, {{auth()->user()->name}}?"></textarea>
            </div>
            <img id="preview" src="#" alt="your image" class="mt-3" style="display:none;"/>
          </div>
@@ -210,7 +210,7 @@
               </div>
 
               <!-- Card Action Dropdown -->
-              @if ($post->username === session('username'))
+              @if ($post->username === auth()->user()->username)
               <div class="flex flex-shrink-0 self-center" x-data="{ open: false }">
                 <div class="relative inline-block text-left">
                   <div>

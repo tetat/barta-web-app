@@ -51,7 +51,7 @@
               </div>
 
               <!-- Card Action Dropdown -->
-              @if ($post->username === session('username'))
+              @if ($post->username === auth()->user()->username)
               <div class="flex flex-shrink-0 self-center" x-data="{ open: false }">
                 <div class="relative inline-block text-left">
                   <div>

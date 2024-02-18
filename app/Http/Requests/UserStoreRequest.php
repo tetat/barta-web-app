@@ -23,10 +23,11 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|min:2',
-            'username' => 'required|min:2',
-            'email' => 'required|email',
+            'username' => 'required|min:2|unique:users',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            // 'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:512'
+            'bio' => 'sometimes|min:3|max:1000',
+            'profile_picture' => 'sometimes|image|mimes:jpg,jpeg,png|max:1024'
         ];
     }
 }
