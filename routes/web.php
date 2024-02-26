@@ -15,8 +15,8 @@ Route::middleware('auth')->group(function () {
     // get profile
     Route::get('/u/{username}', [ProfileController::class, 'getUserByUsername']);
     // edit profile picture
-    Route::get('/image', [ProfileController::class, 'editImage'])->name('image.edit');
-    Route::patch('/image', [ProfileController::class, 'updateImage'])->name('image.update');
+    Route::get('/image', [ProfileController::class, 'editProfilePicture'])->name('image.edit');
+    Route::patch('/image', [ProfileController::class, 'updateProfilePicture'])->name('image.update');
     // edit profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

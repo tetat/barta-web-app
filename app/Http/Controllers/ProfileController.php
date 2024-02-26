@@ -20,7 +20,7 @@ class ProfileController extends Controller
     {
         $user = DB::table('users')->where('username', '=', $request->username)->get()->first();
 
-        $posts = DB::table('posts')->where('posts.user_id', '=', $user->id)->get();
+        $posts = DB::table('posts')->orderBy('created_at', 'desc')->where('posts.user_id', '=', $user->id)->get();
 
         $user->total_posts = $posts->count();
         $user->total_comments = DB::table('comments')->where('user_id', '=', $user->id)->count();
@@ -33,8 +33,6 @@ class ProfileController extends Controller
             $post->comments = $comments;
         }
 
-        // return dd($user);
-
         return view('profile.me', [
             'user' => $user,
             'posts' => $posts,
@@ -43,9 +41,8 @@ class ProfileController extends Controller
     /**
      * Display the user's profile image form.
      */
-    public function editImage(Request $request): View
+    public function editProfilePicture(Request $request): View
     {
-        // return dd($request);
         return view('profile.update-image', [
             'user' => $request->user(),
         ]);
@@ -54,7 +51,7 @@ class ProfileController extends Controller
     /**
      * Update the user's profile picture.
      */
-    public function updateImage(Request $request): RedirectResponse
+    public function updateProfilePicture(Request $request): RedirectResponse
     {
         if (!Auth::user()) return redirect(route('guest'));
 

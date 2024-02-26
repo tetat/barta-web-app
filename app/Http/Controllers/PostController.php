@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -25,21 +24,9 @@ class PostController extends Controller
         $images = $post['image'] ?? [];
         unset($post['image']);
 
-        $res = DB::table('posts')->insertGetId($post);
+        $post_id = DB::table('posts')->insertGetId($post);
 
-        foreach ($images as $img) {
-            $imageName = time() . '_' . $img->getClientOriginalName();
-            $img->move(public_path('images/' . $res), $imageName);
-
-            $imageData = [
-                'image' => 'images/' . $res . '/' . $imageName,
-                'post_id' => $res,
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-
-            DB::table('images')->insert($imageData);
-        }
+        (new ImageController())->store($images, $post_id);
 
         return Redirect::route('dashboard')->with('success', 'Post added successfully.');
     }
@@ -65,8 +52,6 @@ class PostController extends Controller
 
         $post->comments = DB::table('comments')->where('comments.post_id', '=', $post->id)->join('users', 'comments.user_id', '=', 'users.id')->select(['comments.comment_description', 'users.name', 'users.username'])->get();
 
-        // return dd($post);
-
         return view('posts.post')->with('post', $post);
     }
 
@@ -88,20 +73,13 @@ class PostController extends Controller
 
     public function destroy(Request $req) {
         $post = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->select('posts.id')->get()->first();
-
         // delete comments
-        DB::table('comments')->where('post_id', '=', $post->id)->delete();
+        (new CommentController())->destroy($post->id);
         // delete images
-        $images = DB::table('images')->where('post_id', '=', $post->id)->select('image')->get();
-        foreach ($images as $img) {
-            if (isset($img->image)) {
-                File::delete($img->image);
-            }
-        }
-        DB::table('images')->where('post_id', '=', $post->id)->delete();
+        (new ImageController())->destroy($post->id);
         // delete post
         $delete = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->delete();
 
-        return Redirect::route('dashboard')->with('success', 'Post deleted successfully.');
+        return back()->with('success', 'Post deleted successfully.');
     }
 }

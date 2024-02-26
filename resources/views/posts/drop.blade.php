@@ -19,6 +19,12 @@
 
     <main
       class="container justify-center max-w-xl mx-auto space-y-8 mt-8 px-2 md:px-0 min-h-screen">
+      @if (Session::has('success'))
+          <div class="p-4 mb-4 text-sm text-white rounded-lg bg-red-500 dark:bg-gray-800" role="alert">
+              {{Session::get('success')}}
+          </div>
+      @endif
+
       <!-- Post Drop Form -->
 
       <form action="/destroy/{{$post_unique_id}}" method="POST">

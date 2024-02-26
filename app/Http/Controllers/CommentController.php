@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Brick\Math\BigInteger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +14,6 @@ class CommentController extends Controller
         $request->validate([
             'comment_description' => ['required', 'string', 'max:255']
         ]);
-        // if (Str::isUuid($request->post_unique_id))
-        //     return dd($request->comment_description);
 
         $id = DB::table('posts')->where('post_unique_id', '=', $request->post_unique_id)->select('id')->get()->first()->id;
 
@@ -31,5 +28,10 @@ class CommentController extends Controller
         $res = DB::table('comments')->insertGetId($comment);
 
         return back();
+    }
+
+    public function destroy($post_id) {
+        
+        DB::table('comments')->where('post_id', '=', $post_id)->delete();
     }
 }
