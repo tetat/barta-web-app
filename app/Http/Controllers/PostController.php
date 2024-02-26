@@ -87,15 +87,19 @@ class PostController extends Controller
     }
 
     public function destroy(Request $req) {
-        $posts = DB::table('posts')->leftJoin('images', 'posts.id', '=', 'images.post_id')->where('post_unique_id', '=', $req->post_unique_id)->select('posts.id', 'images.image')->get();
+        $post = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->select('posts.id')->get()->first();
 
-        foreach ($posts as $post) {
-            DB::table('images')->where('post_id', '=', $post->id)->delete();
-            if (isset($post->image)) {
-                File::delete($post->image);
+        // delete comments
+        DB::table('comments')->where('post_id', '=', $post->id)->delete();
+        // delete images
+        $images = DB::table('images')->where('post_id', '=', $post->id)->select('image')->get();
+        foreach ($images as $img) {
+            if (isset($img->image)) {
+                File::delete($img->image);
             }
         }
-
+        DB::table('images')->where('post_id', '=', $post->id)->delete();
+        // delete post
         $delete = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->delete();
 
         return Redirect::route('dashboard')->with('success', 'Post deleted successfully.');
