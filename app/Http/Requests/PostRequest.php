@@ -22,7 +22,7 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         $Rules = [
-            'description' => 'required|min:2|max:1000',
+            'post_description' => 'required|min:2|max:1000',
             'image.*' => 'sometimes|image|mimes:jpeg,jpg,png|max:1024'
         ];
         

@@ -49,23 +49,29 @@ class PostController extends Controller
 
         foreach ($posts as &$post) {
             $images = DB::table('images')->where('post_id', '=', $post->id)->select(['image', 'post_id'])->get();
+            $comments = DB::table('comments')->where('post_id', '=', $post->id)->count();
             
             $post->images = $images;
+            $post->comments = $comments;
         }
 
         return view('layouts.app')->with('posts', $posts);
     }
 
     public function getPost(Request $req): View {
-        $post = DB::table('posts')->leftJoin('users', 'posts.user_id', '=', 'users.id')->where('post_unique_id', '=', $req->post_unique_id)->select(['posts.*', 'users.name', 'users.username', 'users.profile_picture'])->get()->first();
+        $post = DB::table('posts')->join('users', 'posts.user_id', '=', 'users.id')->where('post_unique_id', '=', $req->post_unique_id)->select(['users.name', 'users.username', 'users.profile_picture', 'posts.*'])->get()->first();
 
-        $post->images = DB::table('images')->where('post_id', '=', $post->id)->select(['image', 'post_id'])->get();
+        $post->images = DB::table('images')->where('post_id', '=', $post->id)->select('image')->get();
+
+        $post->comments = DB::table('comments')->where('comments.post_id', '=', $post->id)->join('users', 'comments.user_id', '=', 'users.id')->select(['comments.comment_description', 'users.name', 'users.username'])->get();
+
+        // return dd($post);
 
         return view('posts.post')->with('post', $post);
     }
 
     public function edit(Request $req): View {
-        $post = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->select(['description', 'post_unique_id'])->get()->first();
+        $post = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->select(['post_description', 'post_unique_id'])->get()->first();
         
         return view('posts.edit')->with('post', $post);
     }

@@ -16,11 +16,28 @@ class ProfileController extends Controller
     /**
      * Display the user's profile.
      */
-    public function myself(Request $request): View
+    public function getUserByUsername(Request $request): View
     {
-        // return dd($request);
+        $user = DB::table('users')->where('username', '=', $request->username)->get()->first();
+
+        $posts = DB::table('posts')->where('posts.user_id', '=', $user->id)->get();
+
+        $user->total_posts = $posts->count();
+        $user->total_comments = DB::table('comments')->where('user_id', '=', $user->id)->count();
+
+        foreach ($posts as &$post) {
+            $images = DB::table('images')->where('post_id', '=', $post->id)->select(['image', 'post_id'])->get();
+            $comments = DB::table('comments')->where('post_id', '=', $post->id)->select('comment_description')->get();
+            
+            $post->images = $images;
+            $post->comments = $comments;
+        }
+
+        // return dd($user);
+
         return view('profile.me', [
-            'user' => $request->user(),
+            'user' => $user,
+            'posts' => $posts,
         ]);
     }
     /**

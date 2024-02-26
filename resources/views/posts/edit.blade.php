@@ -41,13 +41,13 @@
           <div class="text-gray-700 font-normal w-full">
              <textarea
                class="block w-full p-2 pt-2 text-gray-900 rounded-lg border-none outline-none focus:ring-0 focus:ring-offset-0"
-               name="description"
-               value="{{old('description')}}"
-               rows="2">{{$post->description}}</textarea>
+               name="post_description"
+               value="{{old('post_description')}}"
+               rows="2">{{$post->post_description}}</textarea>
            </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-          <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Cancel</a>
+          <a href="/dashboard" class="text-sm font-semibold leading-6 text-gray-900">Cancel</a>
           <button
             type="submit"
             class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">

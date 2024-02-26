@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,7 @@ Route::get('/dashboard', [PostController::class, 'getPosts'])->middleware(['auth
 
 Route::middleware('auth')->group(function () {
     // get profile
-    Route::get('/me', [ProfileController::class, 'myself'])->name('me.get');
+    Route::get('/u/{username}', [ProfileController::class, 'getUserByUsername']);
     // edit profile picture
     Route::get('/image', [ProfileController::class, 'editImage'])->name('image.edit');
     Route::patch('/image', [ProfileController::class, 'updateImage'])->name('image.update');
@@ -39,5 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/destroy/{post_unique_id}', [PostController::class, 'destroy']);
 });
 
+Route::middleware('auth')->group(function () {
+    Route::post('/comment/{post_unique_id}/store', [CommentController::class, 'commentStore']);
+});
 
 require __DIR__.'/auth.php';
