@@ -27,7 +27,7 @@
 
       <!-- Post Drop Form -->
 
-      <form action="/destroy/{{$post_unique_id}}" method="POST">
+      <form action="{{ route('post.destroy', $post_unique_id) }}" method="POST">
 
         @method('delete')
         @csrf
@@ -36,7 +36,7 @@
         <p class="text-xl">You will never get back this post again!!!</p>
         
         <p class="mt-10 flex items-center gap-4">
-            <a href="/" class="text-xl text-white bg-gray-600 rounded px-4 py-2 hover:text-gray-800">Cancel</a>
+            <a href="{{ url()->previous() }}" class="text-xl text-white bg-gray-600 rounded px-4 py-2 hover:text-gray-800">Cancel</a>
 
             <span class="text-xl"> | </span>
             

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class PostRequest extends FormRequest
 {
@@ -19,17 +20,14 @@ class PostRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(FormRequest $request): array
     {
-        $Rules = [
+        $rul = [
             'post_description' => 'required|min:2|max:1000',
-            'image.*' => 'sometimes|image|mimes:jpeg,jpg,png|max:1024'
         ];
-        
-        if ($this->image === null) {
-            unset($Rules['image.*']);
-        }
 
-        return $Rules;
+        if ($request->image) $rul['image'] = ['nullable', File::image()->max('1mb')];
+
+        return $rul;
     }
 }

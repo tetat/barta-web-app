@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use Illuminate\Support\Str;
 
 class CommentController extends Controller
 {
-    public function commentStore(Request $request) {
+    public function store(Request $request): RedirectResponse {
         $request->validate([
             'comment_description' => ['required', 'string', 'max:255']
         ]);
 
-        $id = DB::table('posts')->where('post_unique_id', '=', $request->post_unique_id)->select('id')->get()->first()->id;
-
-        $comment = [
+        Comment::create([
             'comment_description' => $request->comment_description,
             'user_id' => Auth::user()->id,
-            'post_id' => $id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
+            'post_id' => $request->post_id,
+        ]);
 
-        $res = DB::table('comments')->insertGetId($comment);
-
-        return back();
+        return Redirect::back();
     }
 
     public function destroy($post_id) {

@@ -9,39 +9,25 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('guest');
 
-Route::get('/dashboard', [PostController::class, 'getPosts'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [PostController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    // get profile
-    Route::get('/u/{username}', [ProfileController::class, 'getUserByUsername']);
-    // edit profile picture
-    Route::get('/image', [ProfileController::class, 'editProfilePicture'])->name('image.edit');
-    Route::patch('/image', [ProfileController::class, 'updateProfilePicture'])->name('image.update');
-    // edit profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // delete account
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    // profiles section
+    Route::get('/profile/{username}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/{username}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile/{username}/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/{username}/destroy', [ProfileController::class, 'destroy'])->name('profile.destrooy');
 
-Route::middleware('auth')->group(function () {
-    // Get post
-    Route::get('/post/{post_unique_id}', [PostController::class, 'getPost']);
+    // posts section
+    Route::post('/post/store', [PostController::class, 'store'])->name('post.store');
+    Route::get('/post/{post_unique_id}', [PostController::class, 'show'])->name('post.show');
+    Route::get('/post/{post_unique_id}/edit', [PostController::class, 'edit'])->name('post.edit');
+    Route::patch('/post/{post_unique_id}/update', [PostController::class, 'update'])->name('post.update');
+    Route::get('/post/{post_unique_id}/drop', [PostController::class, 'drop'])->name('post.drop');
+    Route::delete('/post/{post_unique_id}/destroy', [PostController::class, 'destroy'])->name('post.destroy');
 
-    // Create post
-    Route::post('/post_store', [PostController::class, 'postStore'])->name('post_store');
-
-    // Update post
-    Route::get('/edit/{post_unique_id}', [PostController::class, 'edit']);
-    Route::patch('/update/{post_unique_id}', [PostController::class, 'update']);
-    
-    // Delete post
-    Route::get('/drop/{post_unique_id}', [PostController::class, 'drop']);
-    Route::delete('/destroy/{post_unique_id}', [PostController::class, 'destroy']);
-});
-
-Route::middleware('auth')->group(function () {
-    Route::post('/comment/{post_unique_id}/store', [CommentController::class, 'commentStore']);
+    // comments section
+    Route::post('/comment/{post_id}/store', [CommentController::class, 'store'])->name('comment.store');
 });
 
 require __DIR__.'/auth.php';

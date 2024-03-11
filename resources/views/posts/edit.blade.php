@@ -33,7 +33,7 @@
           @endif
 
       <!-- Post Edit Form -->
-      <form action="/update/{{$post->post_unique_id}}" method="POST">
+      <form action="/post/{{$post->post_unique_id}}/update" method="POST">
 
         @method('patch')
         @csrf

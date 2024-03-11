@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
 use App\Http\Requests\PostRequest;
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,73 +16,92 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
-    public function postStore(PostRequest $req): RedirectResponse {
-        $post = $req->validated();
+    /**
+     * Store a post.
+     */
+    public function store(PostRequest $request): RedirectResponse {
+        $post = Post::create([
+            'post_description' => $request->post_description,
+            'post_unique_id' => Str::uuid(),
+            'user_id' => Auth::user()->id,
+        ])->first();
 
-        $post['user_id'] = Auth::user()->id;
-        $post['post_unique_id'] = Str::uuid();
-        $post['created_at'] = now();
-        $post['updated_at'] = now();
-
-        $images = $post['image'] ?? [];
-        unset($post['image']);
-
-        $post_id = DB::table('posts')->insertGetId($post);
-
-        (new ImageController())->store($images, $post_id);
+        if ($request->hasFile('image')) {
+            $post
+                ->addMediaFromRequest('image')
+                ->toMediaCollection('post_image');
+        }
 
         return Redirect::route('dashboard')->with('success', 'Post added successfully.');
     }
-
-    public function getPosts(): View {
-        $posts = DB::table('posts')->orderBy('created_at', 'desc')->leftJoin('users', 'posts.user_id', '=', 'users.id')->select(['posts.*', 'users.name', 'users.username', 'users.profile_picture'])->get();
+    /**
+     * Display posts
+     */
+    public function index(): View {
+        $posts = Post::orderBy('created_at', 'desc')->get();
 
         foreach ($posts as &$post) {
-            $images = DB::table('images')->where('post_id', '=', $post->id)->select(['image', 'post_id'])->get();
-            $comments = DB::table('comments')->where('post_id', '=', $post->id)->count();
-            
-            $post->images = $images;
-            $post->comments = $comments;
+            $post->user = User::where('id', $post->user_id)->first();
+            $post->comments = Comment::where('post_id', $post->id)->count();
         }
 
         return view('layouts.app')->with('posts', $posts);
     }
+    /**
+     * Display a specific post
+     */
+    public function show(Request $request): View {
+        $post = Post::with('comments')->where('post_unique_id', $request->post_unique_id)->first();
+        $post->user = User::where('id', $post->user_id)->first();
 
-    public function getPost(Request $req): View {
-        $post = DB::table('posts')->join('users', 'posts.user_id', '=', 'users.id')->where('post_unique_id', '=', $req->post_unique_id)->select(['users.name', 'users.username', 'users.profile_picture', 'posts.*'])->get()->first();
-
-        $post->images = DB::table('images')->where('post_id', '=', $post->id)->select('image')->get();
-
-        $post->comments = DB::table('comments')->where('comments.post_id', '=', $post->id)->join('users', 'comments.user_id', '=', 'users.id')->select(['comments.comment_description', 'users.name', 'users.username'])->get();
+        foreach ($post->comments as &$comment) {
+            $comment->user = User::where('id', $comment->user_id)->first();
+        }
 
         return view('posts.post')->with('post', $post);
     }
-
-    public function edit(Request $req): View {
-        $post = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->select(['post_description', 'post_unique_id'])->get()->first();
+    /**
+     * Display a post edit form
+     */
+    public function edit(Request $request): View {
+        $post = Post::where('post_unique_id', $request->post_unique_id)->first();
         
         return view('posts.edit')->with('post', $post);
     }
+    /**
+     * Update information of a post
+     */
+    public function update(PostRequest $request): RedirectResponse {
+        $post = Post::where('post_unique_id', $request->post_unique_id)->first();
+        $post->post_description = $request->post_description;
+        $post->save();
 
-    public function update(PostRequest $req) {
-        $update = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->update($req->validated());
-
-        return back()->with('success', 'Post updated successfully.');
+        return Redirect::route('post.edit', $request->post_unique_id)->with('success', 'Post updated successfully.');
     }
-
+    /**
+     * Display post delete form
+     */
     public function drop(Request $req): View {
-        return view('posts.drop')->with('post_unique_id', $req->post_unique_id);
+        return view('posts.drop')
+                ->with('post_unique_id', $req->post_unique_id);
     }
+    /**
+     * Delete a post
+     */
+    public function destroy(Request $request): RedirectResponse {
+        $post = Post::where('post_unique_id', $request->post_unique_id)->first();
 
-    public function destroy(Request $req) {
-        $post = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->select('posts.id')->get()->first();
-        // delete comments
-        (new CommentController())->destroy($post->id);
-        // delete images
-        (new ImageController())->destroy($post->id);
+        if (!$post) return Redirect::route('dashboard');
+
+        // delete comments if any
+        Comment::where('post_id', $post->id)->delete();
+        // delete image if any
+        if ($post->getFirstMediaUrl('post_image')) {
+            $post->clearMediaCollection('post_image');
+        }
         // delete post
-        $delete = DB::table('posts')->where('post_unique_id', '=', $req->post_unique_id)->delete();
+        $post->delete();
 
-        return back()->with('success', 'Post deleted successfully.');
+        return Redirect::route('dashboard')->with('success', 'Post deleted successfully.');
     }
 }

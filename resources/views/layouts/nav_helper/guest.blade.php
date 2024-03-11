@@ -9,24 +9,7 @@
             <h2 class="font-bold text-2xl">Barta</h2>
           </a>
         </div>
-        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-          <!-- Current: "border-gray-800 text-gray-900 font-semibold", Default: "border-transparent text-gray-600 hover:border-gray-300 hover:text-gray-800" -->
-          <a
-            href="#"
-            class="inline-flex items-center border-b-2 border-gray-800 px-1 pt-1 text-sm font-semibold text-gray-900"
-            >Discover</a
-          >
-          <a
-            href="#"
-            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-600 hover:border-gray-300 hover:text-gray-800"
-            >For you</a
-          >
-          <a
-            href="#"
-            class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-600 hover:border-gray-300 hover:text-gray-800"
-            >People</a
-          >
-        </div>
+        
       </div>
       <div class="hidden sm:ml-6 sm:flex gap-2 sm:items-center">
         <!-- This Button Should Be Hidden on Mobile Devices -->
@@ -93,24 +76,7 @@
     x-show="mobileMenuOpen"
     class="sm:hidden"
     id="mobile-menu">
-    <div class="space-y-1 pt-2 pb-3">
-      <!-- Current: "bg-gray-50 border-gray-800 text-gray-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" -->
-      <a
-        href="#"
-        class="block border-l-4 border-gray-800 bg-gray-50 py-2 pl-3 pr-4 text-base font-medium text-gray-700"
-        >Discover</a
-      >
-      <a
-        href="#"
-        class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-        >For You</a
-      >
-      <a
-        href="#"
-        class="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-        >People</a
-      >
-    </div>
+    
     <div class="border-t border-gray-200 pt-4 pb-3">
       
       <div class="mt-3 space-y-1">
