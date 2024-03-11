@@ -12,14 +12,14 @@ https://github.com/alnahian2003/barta-template/tree/master
 
 ## Screenshots
 
-![Welcome](public/images/screenshots/welcome.png)
+![Guest Welcome](public/images/screenshots/welcome.png)
 ![Register](public/images/screenshots/register.png)
 ![Login](public/images/screenshots/login.png)
-![Feed](public/images/screenshots/feed.png)
+![News Feed](public/images/screenshots/feed.png)
 ![Post](public/images/screenshots/post.png)
 ![My Feed](public/images/screenshots/myFeed.png)
-![Edit](public/images/screenshots/edit1.png)
-![Edit](public/images/screenshots/edit2.png)
+![Edit Part 1](public/images/screenshots/edit1.png)
+![Edit Part 2](public/images/screenshots/edit2.png)
 
 ## Features
 
