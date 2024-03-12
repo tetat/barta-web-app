@@ -14,6 +14,7 @@ Route::get('/dashboard', [PostController::class, 'index'])->middleware('auth')->
 // profiles section
 Route::group(['middleware' => 'auth', 'prefix' => 'profile'], function () {
     Route::get('/{username}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/user/search', [ProfileController::class, 'search'])->name('profile.search');
     Route::get('/{username}/edit', [ProfileController::class, 'edit'])->middleware('OwnContent')->name('profile.edit');
     Route::patch('/{username}/update', [ProfileController::class, 'update'])->middleware('OwnContent')->name('profile.update');
     Route::delete('/{username}/destroy', [ProfileController::class, 'destroy'])->middleware('OwnContent')->name('profile.destroy');

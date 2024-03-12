@@ -77,10 +77,6 @@ class PostController extends Controller
 
         // delete comments if any
         Comment::where('post_id', $post->id)->delete();
-        // delete image if any
-        if ($post->getFirstMediaUrl('post_image')) {
-            $post->clearMediaCollection('post_image');
-        }
         // delete post
         $post->delete();
 

@@ -30,13 +30,15 @@
         <!--              </div>-->
       </div>
       <!-- Search input -->
-      <form action="" method="POST" class="flex items-center">
+      <form action="{{route('profile.search')}}" method="GET" class="flex items-center">
         @csrf
         <input
                 type="text"
                 placeholder="Search..."
+                name="search"
                 class="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
         />
+        <!-- <button type="submit">Search</button> -->
       </form>
       <div class="hidden sm:ml-6 sm:flex gap-2 sm:items-center">
         <!-- This Button Should Be Hidden on Mobile Devices -->
