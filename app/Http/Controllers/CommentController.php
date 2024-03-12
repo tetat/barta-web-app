@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
 class CommentController extends Controller
 {
-    public function store(Request $request): RedirectResponse {
-        $request->validate([
-            'comment_description' => ['required', 'string', 'max:255']
-        ]);
-
+    public function store(CommentRequest $request): RedirectResponse {
         Comment::create([
             'comment_description' => $request->comment_description,
             'user_id' => Auth::user()->id,
@@ -26,8 +21,21 @@ class CommentController extends Controller
         return Redirect::back();
     }
 
-    public function destroy($post_id) {
-        
-        DB::table('comments')->where('post_id', '=', $post_id)->delete();
+    public function update(CommentRequest $request): RedirectResponse {
+        $comment = Comment::where('id', $request->comment_id)->first();
+        $comment->comment_description = $request->comment_description;
+        $comment->save();
+
+        return Redirect::back();
+    }
+
+    public function destroy(Request $request): RedirectResponse {
+        $comment = Comment::where('id', $request->comment_id)->first();
+
+        if (!$comment) return Redirect::route('dashboard');
+
+        $comment->delete();
+
+        return Redirect::back();
     }
 }

@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -59,14 +58,6 @@ class PostController extends Controller
         return view('posts.post')->with('post', $post);
     }
     /**
-     * Display a post edit form
-     */
-    public function edit(Request $request): View {
-        $post = Post::where('post_unique_id', $request->post_unique_id)->first();
-        
-        return view('posts.edit')->with('post', $post);
-    }
-    /**
      * Update information of a post
      */
     public function update(PostRequest $request): RedirectResponse {
@@ -74,14 +65,7 @@ class PostController extends Controller
         $post->post_description = $request->post_description;
         $post->save();
 
-        return Redirect::route('post.edit', $request->post_unique_id)->with('success', 'Post updated successfully.');
-    }
-    /**
-     * Display post delete form
-     */
-    public function drop(Request $req): View {
-        return view('posts.drop')
-                ->with('post_unique_id', $req->post_unique_id);
+        return Redirect::back();
     }
     /**
      * Delete a post
@@ -100,6 +84,6 @@ class PostController extends Controller
         // delete post
         $post->delete();
 
-        return Redirect::route('dashboard')->with('success', 'Post deleted successfully.');
+        return Redirect::back();
     }
 }

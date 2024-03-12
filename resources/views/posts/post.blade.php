@@ -81,27 +81,14 @@
               <div
                 x-show="open"
                 @click.away="open = false"
-                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="absolute right-0 z-10 mt-2 w-18 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
                 tabindex="-1">
-                <a
-                  href="{{ route('post.edit', $post->post_unique_id) }}"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="user-menu-item-0"
-                >Edit</a
-                >
-                <a
-                  href="{{ route('post.drop', $post->post_unique_id) }}"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="user-menu-item-1"
-                >Delete</a
-                >
+                @include('posts.partials.edit-post-form')
+                @include('posts.partials.drop-post-form')
+                
               </div>
             </div>
 
@@ -194,61 +181,7 @@
         <div class="flex flex-col space-y-6">
           <h1 class="text-lg font-semibold">Comments ({{$post->comments->count('id')}})</h1>
 
-          <!-- Barta User Comments Container -->
-          <article
-            class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-2 sm:px-6 min-w-full divide-y">
-            <!-- Comments -->
-
-            <!-- Comment 1 -->
-            @foreach ($post->comments as $comment)
-            
-            <div class="py-4">
-              <!-- Barta User Comments Top -->
-              <header>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-3">
-                    <!-- User Info -->
-                    <!-- User Avatar -->
-                    <div class="flex-shrink-0">
-                      <img
-                        class="h-10 w-10 rounded-full object-cover"
-                        src="{{ $comment->user->getFirstMediaUrl('avatar') ? asset('/storage' . explode('/storage', $comment->user->getFirstMediaUrl('avatar'))[1]) : asset('images/poultry.png')}}"
-                        alt="{{$comment->user->name}}" />
-                    </div>
-                    <!-- /User Avatar -->
-                    <div class="text-gray-900 flex flex-col min-w-0 flex-1">
-                      <a
-                        href="{{ route('profile.show', $comment->user->username) }}"
-                        class="hover:underline font-semibold line-clamp-1">
-                        {{$comment->user->name}}
-                      </a>
-
-                      <span
-                        class="hover:underline text-sm text-gray-500 line-clamp-1">
-                        {{'@' . $comment->user->username}}
-                      </span>
-                    </div>
-                    <!-- /User Info -->
-                  </div>
-                </div>
-              </header>
-
-              <!-- Content -->
-              <div class="py-4 text-gray-700 font-normal">
-                <pre>{{$comment->comment_description}}</pre>
-              </div>
-
-              <!-- Date Created -->
-              <div class="flex items-center gap-2 text-gray-500 text-xs">
-                <span class="">6m ago</span>
-              </div>
-            </div>
-            @endforeach
-            <!-- /Comment 1 -->
-
-            <!-- /Comments -->
-          </article>
-          <!-- /Barta User Comments -->
+          @include('comments.comment')
         </div>
       </section>
       <!-- /Newsfeed -->

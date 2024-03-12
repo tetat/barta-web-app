@@ -15,7 +15,7 @@
     >{{ __('Delete Account') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="/profile/{{Auth::user()->username}}/destroy" class="p-6">
+        <form method="post" action="{{ route('profile.destroy', Auth::user()->username) }}" class="p-6">
             @csrf
             @method('delete')
 
@@ -34,7 +34,7 @@
                     id="password"
                     name="password"
                     type="password"
-                    class="mt-1 block w-3/4"
+                    class="mt-1 p-2 block w-3/4"
                     placeholder="{{ __('Password') }}"
                 />
 
