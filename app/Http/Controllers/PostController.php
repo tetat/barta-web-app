@@ -24,12 +24,10 @@ class PostController extends Controller
             'post_description' => $request->post_description,
             'post_unique_id' => Str::uuid(),
             'user_id' => Auth::user()->id,
-        ])->first();
+        ]);
 
         if ($request->hasFile('image')) {
-            $post
-                ->addMediaFromRequest('image')
-                ->toMediaCollection('post_image');
+            $post->addMediaFromRequest('image')->toMediaCollection('post_image');
         }
 
         return Redirect::route('dashboard')->with('success', 'Post added successfully.');

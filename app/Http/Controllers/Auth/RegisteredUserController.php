@@ -30,7 +30,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // return dd($request);
         $request->validate([
             'name' => ['required', 'string', 'min:2', 'max:255'],
             'username' => ['required', 'string', 'min:2', 'max:255', 'unique:'.User::class],
