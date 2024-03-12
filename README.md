@@ -10,7 +10,8 @@ UI Code:
 https://github.com/alnahian2003/barta-template/tree/master
 ```
 
-## Screenshots
+<details>
+<summary>Screenshots</summary>
 
 ![Guest Welcome](public/images/screenshots/welcome.png)
 ![Register](public/images/screenshots/register.png)
@@ -20,6 +21,8 @@ https://github.com/alnahian2003/barta-template/tree/master
 ![My Feed](public/images/screenshots/myFeed.png)
 ![Edit Part 1](public/images/screenshots/edit1.png)
 ![Edit Part 2](public/images/screenshots/edit2.png)
+
+</details>
 
 ## Features
 
